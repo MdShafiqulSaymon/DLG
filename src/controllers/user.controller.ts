@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client";
 const AppError = require("../utills/AppError");
 import prisma from "../../db/db.server";
 const authUttils = require("../utills/auth");
+import { CustomRequest } from "../interfaces";
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { username, email, password } = req.body;
@@ -15,30 +16,16 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 		next(new AppError("Error Happend while creating user", 500));
 	}
 };
-const logIn = async (req: Request, res: Response, next: NextFunction) => {
+const logIn = async (req: CustomRequest, res: Response, next: NextFunction) => {
 	try {
 		const { email, password } = req.body;
 
-		if (!email || !password) {
-			return res
-				.status(400)
-				.json({ message: "Email and password are required" });
+		const isLogIn = await userService.userAuth(req.user, password);
+		console.log("isLogIn", isLogIn);
+		if (!isLogIn) {
+			res.status(500).json({ message: "Invalid Password" });
 		}
-		const user = await prisma.user.findUnique({
-			where: {
-				email: email,
-			},
-		});
-		if (!user) {
-			return res.status(404).json({ message: "User not found" });
-		}
-
-		if (password !== user.password) {
-			return res.status(401).json({ message: "Invalid credentials" });
-		}
-		const token = await authUttils.generateToken(user);
-		console.log(token);
-		res.status(200).json({ message: "Login successful", token: token });
+		res.status(200).json({ message: "Login successful", token: isLogIn });
 	} catch (error) {
 		next(new AppError("An error occurred during login", 500));
 	}

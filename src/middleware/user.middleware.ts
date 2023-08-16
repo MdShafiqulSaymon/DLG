@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../db/db.server";
+import { User } from "@prisma/client";
 const AppError = require("../utills/AppError");
+import { CustomRequest } from "../interfaces";
 const checkUserEmail = async (
 	req: Request,
 	res: Response,
@@ -19,7 +21,7 @@ const checkUserEmail = async (
 	}
 };
 const checkUserExist = async (
-	req: Request,
+	req: CustomRequest,
 	res: Response,
 	next: NextFunction
 ) => {
@@ -31,7 +33,7 @@ const checkUserExist = async (
 			},
 		});
 		if (user) {
-			next();
+			(req.user = user), next();
 		} else {
 			res.status(404).json({ message: "User Not Regestered !!!" });
 		}

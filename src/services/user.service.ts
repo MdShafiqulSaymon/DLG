@@ -1,12 +1,7 @@
-import { PrismaClient } from "@prisma/client";
-import { Request, Response } from "express";
 import prisma from "../../db/db.server";
-import { error } from "console";
 import { CustomRequest } from "../interfaces";
-const jwt = require("jsonwebtoken");
 const env = require("dotenv");
 const authUttils = require("../utills/auth");
-const AppError = require("../utills/AppError");
 env.config();
 const createUser = async ({
 	username,
@@ -80,12 +75,21 @@ const userAuth = async (
 			},
 		});
 		if (user && password !== user.password) {
-			return false;
+			return { message: "Invalid password" };
 		}
 		const token = await authUttils.generateToken(user);
-		return token;
+		return { token };
 	} catch (error) {
+		console.log(error);
 		return Promise.reject(error);
+	}
+};
+const allUsers = async () => {
+	try {
+		const user = await prisma.user.findMany();
+		return user;
+	} catch (error) {
+		console.log(error);
 	}
 };
 const userService = {
@@ -93,6 +97,7 @@ const userService = {
 	deleteUser,
 	updatedUser,
 	userAuth,
+	allUsers,
 };
 
 export default userService;

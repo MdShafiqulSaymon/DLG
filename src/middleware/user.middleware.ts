@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../db/db.server";
-import { User } from "@prisma/client";
 const AppError = require("../utills/AppError");
 import { CustomRequest } from "../interfaces";
 const checkUserEmail = async (

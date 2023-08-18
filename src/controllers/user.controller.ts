@@ -1,9 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import userService from "../services/user.service";
-import { PrismaClient } from "@prisma/client";
 const AppError = require("../utills/AppError");
-import prisma from "../../db/db.server";
-const authUttils = require("../utills/auth");
 import { CustomRequest } from "../interfaces";
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -21,11 +18,7 @@ const logIn = async (req: CustomRequest, res: Response, next: NextFunction) => {
 		const { email, password } = req.body;
 
 		const isLogIn = await userService.userAuth(req.user, password);
-		console.log("isLogIn", isLogIn);
-		if (!isLogIn) {
-			res.status(500).json({ message: "Invalid Password" });
-		}
-		res.status(200).json({ message: "Login successful", token: isLogIn });
+		res.status(200).json({ message: "Login successful", isLogIn });
 	} catch (error) {
 		next(new AppError("An error occurred during login", 500));
 	}
@@ -41,14 +34,12 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
 		);
 	}
 };
-const getAllUser = async (req: Request, res: Response) => {
+const getAllUser = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const users = await prisma.user.findMany();
+		const users = await userService.allUsers();
 		res.status(200).json({ message: "All User Sended", users });
 	} catch {
-		res
-			.status(500)
-			.json({ message: "Error Occure While Read User In Catch Block" });
+		next(new AppError("An error occurred during login", 500));
 	}
 };
 const updatedUser = async (req: Request, res: Response, next: NextFunction) => {

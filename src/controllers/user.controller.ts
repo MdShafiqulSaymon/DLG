@@ -18,7 +18,7 @@ const logIn = async (req: CustomRequest, res: Response, next: NextFunction) => {
 		const { email, password } = req.body;
 
 		const isLogIn = await userService.userAuth(req.user, password);
-		res.status(200).json({ message: "Login successful", isLogIn });
+		res.status(200).json({ message: "Login Status", isLogIn });
 	} catch (error) {
 		next(new AppError("An error occurred during login", 500));
 	}

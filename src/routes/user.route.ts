@@ -17,4 +17,9 @@ router.delete(
 );
 router.get("/users", userController.getAllUser);
 router.put("/:userId", userMiddleware.checkUserId, userController.updatedUser);
+router.put(
+	"/completeProfile/:userId",
+	userMiddleware.checkUserId,
+	userController.userProfile
+);
 module.exports = router;

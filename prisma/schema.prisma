@@ -14,4 +14,24 @@ model User {
   username String   @unique
   email    String   @unique
   password String
+  profile Profile?
+  post Post[]
+}
+model Profile {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId Int @unique
+  firstName String  @default("")
+  lastName String   @default("")
+}
+model Post{
+  id Int @id @default(autoincrement())
+  author User @relation(fields: [authorId],references: [id])
+  authorId Int
+  category Category[]
+}
+
+model Category{
+  id Int @id @default(autoincrement())
+  post Post[]
 }

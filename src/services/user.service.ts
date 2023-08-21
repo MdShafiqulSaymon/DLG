@@ -18,8 +18,12 @@ const createUser = async ({
 				username,
 				email,
 				password,
+				profile: {
+					create: {},
+				},
 			},
 		});
+
 		return Promise.resolve(newUser);
 	} catch (error) {
 		return Promise.reject(error);
@@ -42,13 +46,16 @@ const deleteUser = async (userId: number): Promise<any> => {
 			where: {
 				id: userId,
 			},
+			include: {
+				profile: true,
+			},
 		});
 		Promise.resolve();
 	} catch (error) {
 		Promise.reject(error);
 	}
 };
-const updatedUser = async (
+const updatedPass = async (
 	userId: number,
 	updatedData: Object
 ): Promise<any> => {
@@ -86,18 +93,46 @@ const userAuth = async (
 };
 const allUsers = async () => {
 	try {
-		const user = await prisma.user.findMany();
+		const user = await prisma.user.findMany({
+			include: {
+				profile: true,
+			},
+		});
 		return user;
 	} catch (error) {
 		console.log(error);
 	}
 };
+const completeProfile = async (profileData: {
+	userId: number;
+	firstName: string;
+	lastName: string;
+}): Promise<any> => {
+	try {
+		const { userId, firstName, lastName } = profileData;
+		console.log(profileData.userId);
+		const updateProfile = await prisma.profile.update({
+			where: {
+				userId: userId,
+			},
+			data: {
+				firstName: firstName,
+				lastName: lastName,
+			},
+		});
+		return Promise.resolve(updateProfile);
+	} catch (error) {
+		console.log(error);
+		return Promise.reject(error);
+	}
+};
 const userService = {
 	createUser,
 	deleteUser,
-	updatedUser,
+	updatedPass,
 	userAuth,
 	allUsers,
+	completeProfile,
 };
 
 export default userService;

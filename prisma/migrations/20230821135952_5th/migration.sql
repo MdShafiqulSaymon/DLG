@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `profile` MODIFY `firstName` VARCHAR(191) NOT NULL DEFAULT '',
+    MODIFY `lastName` VARCHAR(191) NOT NULL DEFAULT '';

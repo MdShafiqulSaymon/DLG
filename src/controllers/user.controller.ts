@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import userService from "../services/user.service";
 const AppError = require("../utills/AppError");
 import { CustomRequest } from "../interfaces";
-import { connect } from "http2";
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { username, email, password } = req.body;

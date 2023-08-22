@@ -26,12 +26,22 @@ model Profile {
 }
 model Post{
   id Int @id @default(autoincrement())
-  author User @relation(fields: [authorId],references: [id])
+  author User @relation(fields: [authorId],references: [id],onDelete: Cascade)
   authorId Int
-  category Category[]
+  title String
+  content String
+  post_category Post_category[]
 }
 
 model Category{
   id Int @id @default(autoincrement())
-  post Post[]
+  type String
+  post_category Post_category[]
+}
+model Post_category{
+  postId Int
+  cateId Int
+  post Post @relation(fields: [postId],references: [id])
+  category Category @relation(fields: [cateId],references: [id])
+  @@id([postId,cateId])
 }

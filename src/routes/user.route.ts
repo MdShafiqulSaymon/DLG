@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import userController from "../controllers/user.controller";
+import postController from "../controllers/post.controller";
 import prisma from "../../db/db.server";
 import utils from "../middleware/utils";
 import userMiddleware from "../middleware/user.middleware";

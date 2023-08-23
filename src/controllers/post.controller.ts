@@ -20,8 +20,28 @@ const createPost = (req: Request, res: Response, next: NextFunction) => {
 		);
 	}
 };
-
+const getAllPosts = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const userId = parseInt(req.params.userId);
+		const allPost = await postServices.getAllPosts(userId);
+		res.status(200).json({ message: `All Post of user : ${userId}`, allPost });
+	} catch (error) {
+		next(new AppError(error, 500));
+	}
+};
+const deletePost = (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const userId = parseInt(req.params.userId);
+		const postId = parseInt(req.params.postId);
+		const post = postServices.deletePost(userId, postId);
+		res.status(200).json({ message: `Deleted Post Successfully` });
+	} catch (error) {
+		next(new AppError(error, 500));
+	}
+};
 const postController = {
 	createPost,
+	deletePost,
+	getAllPosts,
 };
 export default postController;

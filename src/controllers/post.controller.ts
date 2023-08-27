@@ -39,9 +39,29 @@ const deletePost = (req: Request, res: Response, next: NextFunction) => {
 		next(new AppError(error, 500));
 	}
 };
+const updatePost = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const userId = parseInt(req.params.userId);
+		const postId = parseInt(req.params.postId);
+		const { title, content } = req.body;
+		const updatedData = {
+			title,
+			content,
+		};
+		const updatePost = await postServices.updatePost(
+			userId,
+			postId,
+			updatedData
+		);
+		res.status(200).json({ message: "All ok From post update", updatePost });
+	} catch (error) {
+		next(new AppError("error Happen to Update Post", 500));
+	}
+};
 const postController = {
 	createPost,
 	deletePost,
 	getAllPosts,
+	updatePost,
 };
 export default postController;

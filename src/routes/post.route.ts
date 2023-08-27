@@ -1,8 +1,6 @@
 import express from "express";
 const router = express.Router();
 import postController from "../controllers/post.controller";
-import prisma from "../../db/db.server";
-import utils from "../middleware/utils";
 import userMiddleware from "../middleware/user.middleware";
 import postMiddleware from "../middleware/post.middleware";
 
@@ -21,5 +19,11 @@ router.delete(
 	userMiddleware.checkUserId,
 	postMiddleware.checkPostId,
 	postController.deletePost
+);
+router.put(
+	"/updatePost/:userId/:postId",
+	userMiddleware.checkUserId,
+	postMiddleware.checkPostId,
+	postController.updatePost
 );
 module.exports = router;

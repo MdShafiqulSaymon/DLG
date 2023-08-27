@@ -1,7 +1,4 @@
 import prisma from "../../db/db.server";
-const env = require("dotenv");
-env.config();
-
 const createPost = async (postData: {
 	userId: number;
 	title: string;
@@ -69,10 +66,34 @@ const deletePost = async (userId: number, postId: number): Promise<any> => {
 		Promise.reject(error);
 	}
 };
+const updatePost = async (
+	userId: number,
+	postId: number,
+	updateData: { title: string; content: string }
+): Promise<any> => {
+	try {
+		if (!updateData.title) updateData.title = "";
+		if (!updateData.content) updateData.content = "";
+		const updatedPost = await prisma.post.update({
+			where: {
+				id: postId,
+				authorId: userId,
+			},
+			data: {
+				title: updateData.title,
+				content: updateData.content,
+			},
+		});
+		return updateData;
+	} catch (error) {
+		Promise.reject(error);
+	}
+};
 const postServices = {
 	createPost,
 	getAllPosts,
 	deletePost,
+	updatePost,
 };
 
 export default postServices;

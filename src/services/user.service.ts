@@ -1,8 +1,6 @@
 import prisma from "../../db/db.server";
 import { CustomRequest } from "../interfaces";
-const env = require("dotenv");
 const authUttils = require("../utills/auth");
-env.config();
 const createUser = async ({
 	username,
 	email,

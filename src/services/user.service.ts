@@ -1,7 +1,6 @@
 import prisma from "../../db/db.server";
 import { CustomRequest } from "../interfaces";
-const authUttils = require("../utills/auth");
-
+import AuthUttils from "../utills/auth";
 class UserService {
 	public async createUser({
 		username,
@@ -72,6 +71,7 @@ class UserService {
 			if (user && password !== user.password) {
 				return { message: "Invalid password" };
 			}
+			const authUttils = new AuthUttils();
 			const token = await authUttils.generateToken(user);
 			return { token };
 		} catch (error) {

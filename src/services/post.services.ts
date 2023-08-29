@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import prisma from "../../db/db.server";
 class PostServices {
 	public async createPost(postData: {
@@ -85,7 +86,7 @@ class PostServices {
 					content: updateData.content,
 				},
 			});
-			return updateData;
+			return updatedPost;
 		} catch (error) {
 			Promise.reject(error);
 		}

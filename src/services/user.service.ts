@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import prisma from "../../db/db.server";
 import { CustomRequest } from "../interfaces";
 import AuthUttils from "../utills/auth";
@@ -28,7 +29,6 @@ class UserService {
 			return Promise.reject(error);
 		}
 	}
-
 	public async deleteUser(userId: number): Promise<any> {
 		try {
 			await prisma.user.delete({
@@ -45,7 +45,7 @@ class UserService {
 		}
 	}
 
-	public async updatedPass(userId: number, updatedData: Object): Promise<any> {
+	public async updatedPass(userId: number, updatedData: object): Promise<any> {
 		try {
 			const updatedUser = await prisma.user.update({
 				where: {
@@ -63,11 +63,6 @@ class UserService {
 		password: string
 	): Promise<any> {
 		try {
-			const fintUser = await prisma.user.findUnique({
-				where: {
-					email: user?.email,
-				},
-			});
 			if (user && password !== user.password) {
 				return { message: "Invalid password" };
 			}

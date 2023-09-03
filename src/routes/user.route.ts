@@ -1,23 +1,23 @@
-import express from "express";
+import express from 'express';
 const router = express.Router();
-import userController from "../controllers/user.controller";
-import userMiddleware from "../middleware/user.middleware";
+import userController from '../controllers/user.controller';
+import userMiddleware from '../middleware/user.middleware';
 router.post(
-	"/register",
-	userMiddleware.checkUserEmail,
-	userController.createUser
+  '/register',
+  userMiddleware.checkUserEmail,
+  userController.createUser
 );
-router.post("/login", userMiddleware.checkUserExist, userController.logIn);
+router.post('/login', userMiddleware.checkUserExist, userController.logIn);
 router.delete(
-	"/:userId",
-	userMiddleware.checkUserId,
-	userController.deleteUser
+  '/:userId',
+  userMiddleware.checkUserId,
+  userController.deleteUser
 );
-router.get("/users", userController.getAllUser);
-router.put("/:userId", userMiddleware.checkUserId, userController.updatedUser);
+router.get('/users', userController.getAllUser);
+router.put('/:userId', userMiddleware.checkUserId, userController.updatedUser);
 router.put(
-	"/completeProfile/:userId",
-	userMiddleware.checkUserId,
-	userController.userProfile
+  '/completeProfile/:userId',
+  userMiddleware.checkUserId,
+  userController.userProfile
 );
 module.exports = router;

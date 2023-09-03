@@ -9,39 +9,39 @@ datasource db {
   provider = "mysql"
   url = "mysql://root:123456@localhost:3306/crud?schema=public"
 }
-model User {
+model user {
   id       Int      @id @default(autoincrement())
   username String   @unique
   email    String   @unique
   password String
-  profile Profile?
-  post Post[]
+  profile profile? 
+  post post[]
 }
-model Profile {
+model profile {
   id Int @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
+  user user @relation(fields: [userId], references: [id],onDelete: Cascade)
   userId Int @unique
   firstName String  @default("")
   lastName String   @default("")
 }
-model Post{
+model post{
   id Int @id @default(autoincrement())
-  author User @relation(fields: [authorId],references: [id],onDelete: Cascade)
+  author user @relation(fields: [authorId],references: [id],onDelete: Cascade)
   authorId Int
   title String
   content String
-  post_category Post_category[]
+  post_category post_category[]
 }
 
-model Category{
+model category{
   id Int @id @default(autoincrement())
   type String
-  post_category Post_category[]
+  post_category post_category[]
 }
-model Post_category{
+model post_category{
   postId Int
   cateId Int
-  post Post @relation(fields: [postId],references: [id],onDelete: Cascade,onUpdate: Cascade)
-  category Category @relation(fields: [cateId],references: [id],onDelete: Cascade,onUpdate: Cascade)
+  post post @relation(fields: [postId],references: [id],onDelete: Cascade,onUpdate: Cascade)
+  category category @relation(fields: [cateId],references: [id],onDelete: Cascade,onUpdate: Cascade)
   @@id([postId,cateId])
 }

@@ -1,4 +1,4 @@
-import prisma from '../../db/db.server';
+import { db, DbType } from '../db';
 
 class PostService {
   public async updatePost(
@@ -9,7 +9,7 @@ class PostService {
     try {
       if (!updateData.title) updateData.title = '';
       if (!updateData.content) updateData.content = '';
-      const updatedPost = await prisma.post.update({
+      const updatedPost = await db.post.update({
         where: {
           id: postId,
           authorId: userId,
@@ -27,7 +27,7 @@ class PostService {
 
   public async deletePost(userId: number, postId: number): Promise<any> {
     try {
-      const post = await prisma.post.delete({
+      const post = await db.post.delete({
         where: {
           authorId: userId,
           id: postId,
@@ -42,7 +42,7 @@ class PostService {
   public async getAllPosts(userId: number): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
-        const allPost = await prisma.post.findMany({
+        const allPost = await db.post.findMany({
           where: { authorId: userId },
         });
         resolve(allPost);
@@ -60,14 +60,14 @@ class PostService {
   }): Promise<any> {
     try {
       const { userId, title, content, category } = postData;
-      const findCategory = await prisma.category.findFirst({
+      const findCategory = await db.category.findFirst({
         where: {
           type: category,
         },
       });
       let categoryIdNew;
       if (!findCategory) {
-        const newCategory = await prisma.category.create({
+        const newCategory = await db.category.create({
           data: {
             type: category,
           },
@@ -76,7 +76,7 @@ class PostService {
       } else {
         categoryIdNew = findCategory.id;
       }
-      const newPost = await prisma.post.create({
+      const newPost = await db.post.create({
         data: {
           title,
           content,
@@ -85,7 +85,7 @@ class PostService {
           },
         },
       });
-      await prisma.post_category.create({
+      await db.post_category.create({
         data: {
           postId: newPost.id,
           cateId: categoryIdNew,

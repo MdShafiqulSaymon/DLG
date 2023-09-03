@@ -1,4 +1,3 @@
-import prisma from '../../db/db.server';
 import { CustomRequest } from '../interfaces';
 import AuthUttils from '../utills/auth';
 import { IUser } from '../type/user.type';
@@ -72,7 +71,7 @@ export class UserServices extends BaseRepository<DbType> {
     try {
       const { userId, firstName, lastName } = profileData;
       console.log(profileData.userId);
-      const updateProfile = await prisma.profile.update({
+      const updateProfile = await db.profile.update({
         where: {
           userId: userId,
         },
@@ -91,7 +90,7 @@ export class UserServices extends BaseRepository<DbType> {
 export class UserService {
   public async createUser({ username, email, password }: IUser): Promise<any> {
     try {
-      const newUser = await prisma.user.create({
+      const newUser = await db.user.create({
         data: {
           username,
           email,
@@ -109,7 +108,7 @@ export class UserService {
   }
   public async deleteUser(userId: number): Promise<any> {
     try {
-      await prisma.user.delete({
+      await db.user.delete({
         where: {
           id: userId,
         },
@@ -125,7 +124,7 @@ export class UserService {
 
   public async updatedPass(userId: number, updatedData: object): Promise<any> {
     try {
-      const updatedUser = await prisma.user.update({
+      const updatedUser = await db.user.update({
         where: {
           id: userId,
         },
@@ -154,7 +153,7 @@ export class UserService {
   }
   public async allUser() {
     try {
-      const user = await prisma.user.findMany({
+      const user = await db.user.findMany({
         include: {
           profile: true,
         },
@@ -172,7 +171,7 @@ export class UserService {
     try {
       const { userId, firstName, lastName } = profileData;
       console.log(profileData.userId);
-      const updateProfile = await prisma.profile.update({
+      const updateProfile = await db.profile.update({
         where: {
           userId: userId,
         },

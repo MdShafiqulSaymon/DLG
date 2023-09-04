@@ -1,5 +1,4 @@
 import { type Prisma, user } from '@prisma/client';
-import { IUser } from '../type/user.type';
 export default class BaseRepository<DatabaseType> {
   protected db: DatabaseType;
   protected model: Prisma.ModelName;
@@ -42,6 +41,18 @@ export default class BaseRepository<DatabaseType> {
       throw error;
     }
   }
+  protected async get<T>(searchKey: any): Promise<T> {
+    try {
+      const data = await this.db[this.model].findMany({
+        wehre: {
+          id: searchKey,
+        },
+      });
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
   protected async delete<T>(id: number): Promise<T> {
     try {
       const deleteItem = await this.db[this.model].delete({
@@ -54,4 +65,5 @@ export default class BaseRepository<DatabaseType> {
       throw error;
     }
   }
+  protected async test<T>(data: any) {}
 }

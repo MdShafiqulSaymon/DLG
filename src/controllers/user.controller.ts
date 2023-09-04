@@ -1,75 +1,49 @@
 import { NextFunction, Request, Response } from 'express';
-import { UserService, UserServices } from '../services/user.service';
+import { UserServices } from '../services/user.service';
 const AppError = require('../utills/AppError');
 import { CustomRequest } from '../interfaces';
+import catchAsync from '../utills/catchAsync';
+import { channel } from 'diagnostics_channel';
 class UserController {
-  static createUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
+  static createUser = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
       const { username, email, password } = req.body;
       const userService = new UserServices();
-      const data = await userService.createUser({ username, email, password });
+      const data = await userService.createUser({
+        username,
+        email,
+        password,
+      });
       res.status(201).json({
         message: 'New User Created',
       });
-    } catch (error: any) {
-      next(new AppError('Error Happend while creating user', 500));
     }
-  };
-  static logIn = async (
-    req: CustomRequest,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
+  );
+  static logIn = catchAsync(
+    async (req: CustomRequest, res: Response, next: NextFunction) => {
       const { email, password } = req.body;
       const userService = new UserServices();
       const isLogIn = await userService.userAuth(req.user, password);
       res.status(200).json({ message: 'Login Status', isLogIn });
-    } catch (error) {
-      next(new AppError('An error occurred during login', 500));
     }
-  };
-  static deleteUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
+  );
+  static deleteUser = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
       const userId = parseInt(req.params.userId);
       const userService = new UserServices();
       const deleteUser = await userService.deleteUser(userId);
       res.status(200).json({ message: `${userId} is Deleted Successfully!!!` });
-    } catch (error) {
-      next(
-        new AppError(
-          `An error occurred while deleting user !!! Error : ${error}`
-        )
-      );
     }
-  };
-  static getAllUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
+  );
+  static getAllUser = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
       const userService = new UserServices();
       const users = await userService.allUser();
       res.status(200).json({ message: 'All User Sended', users });
-    } catch {
-      next(new AppError('An error occurred during login', 500));
     }
-  };
-  static updatedUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
+  );
+  static updatedUser = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
       const userId = parseInt(req.params.userId);
       const { password } = req.body;
       const updatedData = {
@@ -81,20 +55,10 @@ class UserController {
         message: `ID: ${userId} is Updated Successfully!!!`,
         updatedUser,
       });
-    } catch (error) {
-      return next(
-        new AppError(
-          `An error occurred while Updatding user !!! Error : ${error}`
-        )
-      );
     }
-  };
-  static userProfile = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
+  );
+  static userProfile = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
       const { firstName, lastName } = req.body;
       const userId = parseInt(req.params.userId);
       const profileData = {
@@ -107,9 +71,7 @@ class UserController {
       res
         .status(200)
         .json({ message: 'User Profile Updated Succesfully', updatedProfile });
-    } catch (error) {
-      next(new AppError('Error Occure in UserProflie Routes', 404));
     }
-  };
+  );
 }
 export default UserController;

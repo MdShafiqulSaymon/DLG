@@ -9,10 +9,9 @@ class PostController {
       const userId = parseInt(req.params.userId);
       const postServices = new PostServices();
       const postData = {
-        userId,
+        authorId:userId,
         title: title || '',
         content: content || '',
-        category: category || 'default',
       };
       postServices.createPost(postData);
       res.status(200).json({ message: 'Post Posted Successfull!' });

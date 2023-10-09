@@ -1,6 +1,5 @@
 export type UserPostType = {
-  userId: number;
+  authorId: number;
   title: string;
   content: string;
-  category: string;
 };

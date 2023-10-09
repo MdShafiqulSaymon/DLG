@@ -2,11 +2,11 @@
 import express from 'express';
 import appRouter from './src/routes';
 import { ENV } from './src/config/envConfig';
+import createServer from './src/utills/server';
 
-const app = express();
-app.use(express.json());
-app.use('/api', appRouter);
+const app =createServer()
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${ENV.PORT}`);
 });
+export default app;

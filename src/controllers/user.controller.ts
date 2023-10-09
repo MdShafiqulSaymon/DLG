@@ -14,7 +14,7 @@ class UserController {
         email,
         password,
       });
-      res.status(201).json({
+      res.status(201).send({
         message: 'New User Created',
       });
     }

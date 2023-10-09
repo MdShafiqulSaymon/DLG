@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url = "mysql://root:123456@localhost:3306/crud?schema=public"
+  url = "mysql://root:P@ssw0rd@localhost:3306/crud"
 }
 model user {
   id       Int      @id @default(autoincrement())

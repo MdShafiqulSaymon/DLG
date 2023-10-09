@@ -44,7 +44,7 @@ export default class BaseRepository<DatabaseType> {
   protected async get<T>(searchKey: any): Promise<T> {
     try {
       const data = await this.db[this.model].findMany({
-        wehre: {
+        where: {
           id: searchKey,
         },
       });

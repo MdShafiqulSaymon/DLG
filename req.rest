@@ -1,0 +1,31 @@
+@baseurl = http://localhost:5779/api
+
+###
+
+POST {{baseurl}}/register
+Content-Type: application/json
+
+{
+    "username":"dsdfsdffs",
+    "email":"dsdfsdffs@gmail.com",
+    "password":"123456"
+
+}
+
+###
+GET {{baseurl}}/users
+Content-Type: application/json
+
+###
+
+GET {{baseurl}}/getAllPosts/11
+Content-Type: application/json
+
+###
+PUT {{baseurl}}/updatePost/11/3
+Content-Type: application/json
+
+{
+    "title":"saymon",
+    "content":"mdshafiqulsaymon@gmail.com"
+}
